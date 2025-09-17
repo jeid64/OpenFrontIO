@@ -172,7 +172,7 @@ export default async (env, argv) => {
             // WebSocket proxies
             {
               context: ["/socket"],
-              target: "ws://localhost:3000",
+              target: "wss://openfront.io",
               ws: true,
               changeOrigin: true,
               logLevel: "debug",
@@ -180,7 +180,7 @@ export default async (env, argv) => {
             // Worker WebSocket proxies - using direct paths without /socket suffix
             {
               context: ["/w0"],
-              target: "ws://localhost:3001",
+              target: "wss://openfront.io",
               ws: true,
               secure: false,
               changeOrigin: true,
@@ -188,7 +188,7 @@ export default async (env, argv) => {
             },
             {
               context: ["/w1"],
-              target: "ws://localhost:3002",
+              target: "wss://openfront.io",
               ws: true,
               secure: false,
               changeOrigin: true,
@@ -196,7 +196,7 @@ export default async (env, argv) => {
             },
             {
               context: ["/w2"],
-              target: "ws://localhost:3003",
+              target: "wss://openfront.io",
               ws: true,
               secure: false,
               changeOrigin: true,
@@ -205,7 +205,7 @@ export default async (env, argv) => {
             // Worker proxies for HTTP requests
             {
               context: ["/w0"],
-              target: "http://localhost:3001",
+              target: "https://openfront.io",
               pathRewrite: { "^/w0": "" },
               secure: false,
               changeOrigin: true,
@@ -213,7 +213,7 @@ export default async (env, argv) => {
             },
             {
               context: ["/w1"],
-              target: "http://localhost:3002",
+              target: "https://openfront.io",
               pathRewrite: { "^/w1": "" },
               secure: false,
               changeOrigin: true,
@@ -221,7 +221,7 @@ export default async (env, argv) => {
             },
             {
               context: ["/w2"],
-              target: "http://localhost:3003",
+              target: "https://openfront.io",
               pathRewrite: { "^/w2": "" },
               secure: false,
               changeOrigin: true,
@@ -241,7 +241,7 @@ export default async (env, argv) => {
                 "/api/auth/discord",
                 "/api/kick_player",
               ],
-              target: "http://localhost:3000",
+              target: "https://openfront.io",
               secure: false,
               changeOrigin: true,
             },
