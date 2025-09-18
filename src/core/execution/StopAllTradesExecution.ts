@@ -19,7 +19,7 @@ export class StopAllTradesExecution implements Execution {
           continue;
         }
 
-        this.player.addEmbargo(partner.id(), false);
+        this.player.addEmbargo(partner, false);
       }
     } catch (error) {
       console.error("Error in StopAllTradesExecution:", error);
