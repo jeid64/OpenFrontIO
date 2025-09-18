@@ -21,6 +21,7 @@ import { NoOpExecution } from "./NoOpExecution";
 import { QuickChatExecution } from "./QuickChatExecution";
 import { RetreatExecution } from "./RetreatExecution";
 import { SpawnExecution } from "./SpawnExecution";
+import { StopAllTradesExecution } from "./StopAllTradesExecution";
 import { TargetPlayerExecution } from "./TargetPlayerExecution";
 import { TransportShipExecution } from "./TransportShipExecution";
 import { UpgradeStructureExecution } from "./UpgradeStructureExecution";
@@ -99,6 +100,8 @@ export class Executor {
         return new DonateGoldExecution(player, intent.recipient, intent.gold);
       case "embargo":
         return new EmbargoExecution(player, intent.targetID, intent.action);
+      case "stopAllTrades":
+        return new StopAllTradesExecution(player, intent.targetTeamId);
       case "build_unit":
         return new ConstructionExecution(player, intent.unit, intent.tile);
       case "allianceExtension": {
