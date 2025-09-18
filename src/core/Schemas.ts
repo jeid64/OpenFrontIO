@@ -36,7 +36,6 @@ export type Intent =
   | DonateTroopsIntent
   | BuildUnitIntent
   | EmbargoIntent
-  | StopAllTradesIntent
   | TargetTroopRatioIntent
   | QuickChatIntent
   | MoveWarshipIntent
@@ -59,7 +58,6 @@ export type EmojiIntent = z.infer<typeof EmojiIntentSchema>;
 export type DonateGoldIntent = z.infer<typeof DonateGoldIntentSchema>;
 export type DonateTroopsIntent = z.infer<typeof DonateTroopIntentSchema>;
 export type EmbargoIntent = z.infer<typeof EmbargoIntentSchema>;
-export type StopAllTradesIntent = z.infer<typeof StopAllTradesIntentSchema>;
 export type TargetTroopRatioIntent = z.infer<
   typeof TargetTroopRatioIntentSchema
 >;
@@ -280,11 +278,6 @@ export const EmbargoIntentSchema = BaseIntentSchema.extend({
   action: z.union([z.literal("start"), z.literal("stop")]),
 });
 
-export const StopAllTradesIntentSchema = BaseIntentSchema.extend({
-  type: z.literal("stopAllTrades"),
-  targetTeamId: z.string().optional(),
-});
-
 export const TargetTroopRatioIntentSchema = BaseIntentSchema.extend({
   type: z.literal("troop_ratio"),
   ratio: z.number().min(0).max(1),
@@ -364,7 +357,6 @@ const IntentSchema = z.discriminatedUnion("type", [
   BuildUnitIntentSchema,
   UpgradeStructureIntentSchema,
   EmbargoIntentSchema,
-  StopAllTradesIntentSchema,
   TargetTroopRatioIntentSchema,
   MoveWarshipIntentSchema,
   QuickChatIntentSchema,
