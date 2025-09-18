@@ -8,7 +8,6 @@ import { AttackRatioEvent } from "../../InputHandler";
 import {
   SendEmbargoIntentEvent,
   SendSetTargetTroopRatioEvent,
-  SendStopAllTradesIntentEvent,
 } from "../../Transport";
 import { renderNumber, renderTroops, translateText } from "../../Utils";
 import { UIState } from "../UIState";
@@ -185,6 +184,12 @@ export class ControlPanel extends LitElement implements Layer {
     return this.game?.config().gameConfig().gameMode === GameMode.Team;
   }
 
+  private isSameTeam(player1: PlayerView, player2: PlayerView): boolean {
+    const team1 = player1.team();
+    const team2 = player2.team();
+    return team1 !== null && team2 !== null && team1 === team2;
+  }
+
   private getTeams() {
     if (!this.isTeamGame) return [];
 
@@ -254,8 +259,29 @@ export class ControlPanel extends LitElement implements Layer {
   }
 
   private onStopAllTrades() {
-    this.eventBus.emit(new SendStopAllTradesIntentEvent());
-    this._allTradesStopped = true;
+    try {
+      const myPlayer = this.game.myPlayer();
+      if (!myPlayer) {
+        console.warn("Cannot stop all trades: player not found");
+        return;
+      }
+
+      const allPlayers = this.game.playerViews();
+      for (const player of allPlayers) {
+        if (
+          player !== myPlayer &&
+          player.isAlive() &&
+          !myPlayer.hasEmbargoAgainst(player) &&
+          !myPlayer.isAlliedWith(player) &&
+          !this.isSameTeam(myPlayer, player)
+        ) {
+          this.eventBus.emit(new SendEmbargoIntentEvent(player, "start"));
+        }
+      }
+      this._allTradesStopped = true;
+    } catch (error) {
+      console.error("Error stopping all trades:", error);
+    }
   }
 
   private onStartAllTrades() {
@@ -305,7 +331,22 @@ export class ControlPanel extends LitElement implements Layer {
         }
       } else {
         // Stop trades with this team
-        this.eventBus.emit(new SendStopAllTradesIntentEvent(teamId));
+        const myPlayer = this.game.myPlayer();
+        if (!myPlayer) {
+          console.warn("Cannot stop team trades: player not found");
+          return;
+        }
+
+        const allPlayers = this.game.playerViews();
+        for (const player of allPlayers) {
+          if (
+            player.team()?.toString() === teamId &&
+            player !== myPlayer &&
+            !myPlayer.hasEmbargoAgainst(player)
+          ) {
+            this.eventBus.emit(new SendEmbargoIntentEvent(player, "start"));
+          }
+        }
       }
       this._showTeamDropdown = false;
     } catch (error) {

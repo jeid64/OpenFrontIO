@@ -132,10 +132,6 @@ export class SendEmbargoIntentEvent implements GameEvent {
   ) {}
 }
 
-export class SendStopAllTradesIntentEvent implements GameEvent {
-  constructor(public readonly targetTeamId?: string) {}
-}
-
 export class SendSetTargetTroopRatioEvent implements GameEvent {
   constructor(public readonly ratio: number) {}
 }
@@ -229,9 +225,6 @@ export class Transport {
     this.eventBus.on(SendQuickChatEvent, (e) => this.onSendQuickChatIntent(e));
     this.eventBus.on(SendEmbargoIntentEvent, (e) =>
       this.onSendEmbargoIntent(e),
-    );
-    this.eventBus.on(SendStopAllTradesIntentEvent, (e) =>
-      this.onSendStopAllTradesIntent(e),
     );
     this.eventBus.on(SendSetTargetTroopRatioEvent, (e) =>
       this.onSendSetTargetTroopRatioEvent(e),
@@ -534,14 +527,6 @@ export class Transport {
       clientID: this.lobbyConfig.clientID,
       targetID: event.target.id(),
       action: event.action,
-    });
-  }
-
-  private onSendStopAllTradesIntent(event: SendStopAllTradesIntentEvent) {
-    this.sendIntent({
-      type: "stopAllTrades",
-      clientID: this.lobbyConfig.clientID,
-      targetTeamId: event.targetTeamId,
     });
   }
 
