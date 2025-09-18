@@ -132,6 +132,14 @@ export class SendEmbargoIntentEvent implements GameEvent {
   ) {}
 }
 
+export class SendStopAllTradesIntentEvent implements GameEvent {
+  constructor(public readonly targetTeamId?: string) {}
+}
+
+export class SendSetTargetTroopRatioEvent implements GameEvent {
+  constructor(public readonly ratio: number) {}
+}
+
 export class CancelAttackIntentEvent implements GameEvent {
   constructor(public readonly attackID: string) {}
 }
@@ -221,6 +229,12 @@ export class Transport {
     this.eventBus.on(SendQuickChatEvent, (e) => this.onSendQuickChatIntent(e));
     this.eventBus.on(SendEmbargoIntentEvent, (e) =>
       this.onSendEmbargoIntent(e),
+    );
+    this.eventBus.on(SendStopAllTradesIntentEvent, (e) =>
+      this.onSendStopAllTradesIntent(e),
+    );
+    this.eventBus.on(SendSetTargetTroopRatioEvent, (e) =>
+      this.onSendSetTargetTroopRatioEvent(e),
     );
     this.eventBus.on(BuildUnitIntentEvent, (e) => this.onBuildUnitIntent(e));
 
@@ -520,6 +534,22 @@ export class Transport {
       clientID: this.lobbyConfig.clientID,
       targetID: event.target.id(),
       action: event.action,
+    });
+  }
+
+  private onSendStopAllTradesIntent(event: SendStopAllTradesIntentEvent) {
+    this.sendIntent({
+      type: "stopAllTrades",
+      clientID: this.lobbyConfig.clientID,
+      targetTeamId: event.targetTeamId,
+    });
+  }
+
+  private onSendSetTargetTroopRatioEvent(event: SendSetTargetTroopRatioEvent) {
+    this.sendIntent({
+      type: "troop_ratio",
+      clientID: this.lobbyConfig.clientID,
+      ratio: event.ratio,
     });
   }
 
