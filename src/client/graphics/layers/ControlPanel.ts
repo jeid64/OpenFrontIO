@@ -69,6 +69,8 @@ export class ControlPanel extends LitElement implements Layer {
 
   private _lastPopulationIncreaseRate: number;
 
+  private _lastTroopIncreaseRate: number;
+
   private init_: boolean = false;
 
   private _clickOutsideHandler: ((e: Event) => void) | null = null;
