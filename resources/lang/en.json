@@ -529,6 +529,8 @@
     "stop_all_trades_tooltip": "Stop trading with all non-allied players and non-team members",
     "start_all_trades": "Start All Trades",
     "start_all_trades_tooltip": "Resume trading with all previously embargoed players",
+    "gurtz_mode": "GURTZ Mode",
+    "gurtz_mode_tooltip": "Stop all trades, then re-enable trading with [GURTZ] players and send them alliance requests",
     "stop_team_trades": "Stop Team Trades",
     "stop_team_trades_dropdown_tooltip": "Select a specific team to stop trading with",
     "stop_team_trades_tooltip": "Stop trading with all players from {{team}}",

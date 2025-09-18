@@ -6,6 +6,7 @@ import { GameView, PlayerView } from "../../../core/game/GameView";
 import { ClientID } from "../../../core/Schemas";
 import { AttackRatioEvent } from "../../InputHandler";
 import {
+  SendAllianceRequestIntentEvent,
   SendEmbargoIntentEvent,
   SendSetTargetTroopRatioEvent,
 } from "../../Transport";
@@ -188,6 +189,67 @@ export class ControlPanel extends LitElement implements Layer {
     const team1 = player1.team();
     const team2 = player2.team();
     return team1 !== null && team2 !== null && team1 === team2;
+  }
+
+  private isGurtzPlayer(player: PlayerView): boolean {
+    return player.name().toUpperCase().includes("[GURTZ]");
+  }
+
+  private onGurtzMode() {
+    try {
+      const myPlayer = this.game.myPlayer();
+      if (!myPlayer) {
+        console.warn("Cannot activate GURTZ mode: player not found");
+        return;
+      }
+
+      const allPlayers = this.game.playerViews();
+      const gurtzPlayers: PlayerView[] = [];
+
+      // Step 1: Stop all trades (except allies and same team)
+      for (const player of allPlayers) {
+        if (
+          player !== myPlayer &&
+          player.isAlive() &&
+          !myPlayer.hasEmbargoAgainst(player) &&
+          !myPlayer.isAlliedWith(player) &&
+          !this.isSameTeam(myPlayer, player)
+        ) {
+          this.eventBus.emit(new SendEmbargoIntentEvent(player, "start"));
+        }
+
+        // Collect GURTZ players for special handling
+        if (
+          player !== myPlayer &&
+          player.isAlive() &&
+          this.isGurtzPlayer(player)
+        ) {
+          gurtzPlayers.push(player);
+        }
+      }
+
+      // Step 2: Re-enable trading with GURTZ players and send alliance requests
+      for (const gurtzPlayer of gurtzPlayers) {
+        // Re-enable trading if we just embargoed them
+        if (myPlayer.hasEmbargoAgainst(gurtzPlayer)) {
+          this.eventBus.emit(new SendEmbargoIntentEvent(gurtzPlayer, "stop"));
+        }
+
+        // Send alliance request if not already allied
+        if (!myPlayer.isAlliedWith(gurtzPlayer)) {
+          this.eventBus.emit(
+            new SendAllianceRequestIntentEvent(myPlayer, gurtzPlayer),
+          );
+        }
+      }
+
+      this._allTradesStopped = true;
+      console.log(
+        `GURTZ Mode activated: Found ${gurtzPlayers.length} GURTZ players`,
+      );
+    } catch (error) {
+      console.error("Error activating GURTZ mode:", error);
+    }
   }
 
   private getTeams() {
@@ -590,6 +652,14 @@ export class ControlPanel extends LitElement implements Layer {
             ${this._allTradesStopped
               ? translateText("control_panel.start_all_trades")
               : translateText("control_panel.stop_all_trades")}
+          </button>
+
+          <button
+            @click=${this.onGurtzMode}
+            class="w-full px-3 py-2 text-sm bg-purple-600/80 hover:bg-purple-600 text-white rounded border border-purple-500/50 hover:border-purple-400 transition-all duration-200 backdrop-blur font-medium"
+            title="${translateText("control_panel.gurtz_mode_tooltip")}"
+          >
+            ${translateText("control_panel.gurtz_mode")}
           </button>
 
           ${this.renderTeamDropdown()}
