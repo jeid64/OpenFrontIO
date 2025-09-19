@@ -74,7 +74,7 @@ export class UsernameInput extends LitElement {
     if (storedUsername) {
       // Check if stored username contains "Anon" and replace with [GURTZ] + random digits
       if (storedUsername.includes("Anon")) {
-        const newUsername = "[GURTZ]" + this.uuidToThreeDigits();
+        const newUsername = "[GURTZ] " + this.uuidToThreeDigits();
         this.storeUsername(newUsername);
         return newUsername;
       }
