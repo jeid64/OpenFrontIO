@@ -308,6 +308,10 @@ export class Transport {
     this.onmessage = onmessage;
     this.socket.onopen = () => {
       console.log("Connected to game server!");
+
+      // Dispatch websocket connected event
+      document.dispatchEvent(new CustomEvent("websocket-connected"));
+
       if (this.socket === null) {
         console.error("socket is null");
         return;
@@ -347,6 +351,10 @@ export class Transport {
       console.log(
         `WebSocket closed. Code: ${event.code}, Reason: ${event.reason}`,
       );
+
+      // Dispatch websocket disconnected event
+      document.dispatchEvent(new CustomEvent("websocket-disconnected"));
+
       if (event.code === 1002) {
         // TODO: make this a modal
         alert(`connection refused: ${event.reason}`);

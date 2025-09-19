@@ -37,6 +37,7 @@ import {
 } from "./Utils";
 import "./components/NewsButton";
 import { NewsButton } from "./components/NewsButton";
+import "./components/WebSocketStatusBanner";
 import "./components/baseComponents/Button";
 import "./components/baseComponents/Modal";
 import { discordLogin, getUserMe, isLoggedIn } from "./jwt";
