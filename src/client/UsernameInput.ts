@@ -1,5 +1,6 @@
 import { LitElement, html } from "lit";
 import { customElement, property, state } from "lit/decorators.js";
+import { v4 as uuidv4 } from "uuid";
 import { translateText } from "../client/Utils";
 import { UserSettings } from "../core/game/UserSettings";
 import {
@@ -71,9 +72,9 @@ export class UsernameInput extends LitElement {
   private getStoredUsername(): string {
     const storedUsername = localStorage.getItem(usernameKey);
     if (storedUsername) {
-      // Check if stored username contains "Anon" and replace with [GURTZ]
+      // Check if stored username contains "Anon" and replace with [GURTZ] + random digits
       if (storedUsername.includes("Anon")) {
-        const newUsername = "[GURTZ]";
+        const newUsername = "[GURTZ]" + this.uuidToThreeDigits();
         this.storeUsername(newUsername);
         return newUsername;
       }
@@ -99,9 +100,17 @@ export class UsernameInput extends LitElement {
   }
 
   private generateNewUsername(): string {
-    const newUsername = "[GURTZ]";
+    const newUsername = "[GURTZ]" + this.uuidToThreeDigits();
     this.storeUsername(newUsername);
     return newUsername;
+  }
+
+  private uuidToThreeDigits(): string {
+    const uuid = uuidv4();
+    const cleanUuid = uuid.replace(/-/g, "").toLowerCase();
+    const decimal = BigInt(`0x${cleanUuid}`);
+    const threeDigits = decimal % 1000n;
+    return threeDigits.toString().padStart(3, "0");
   }
 
   public isValid(): boolean {

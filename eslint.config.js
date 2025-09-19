@@ -30,6 +30,8 @@ export default [
             "postcss.config.js",
             "tailwind.config.js",
             "webpack.config.js",
+            "webpack.envoy.config.js",
+            "webpack.envoy-hosted.config.js",
           ],
         },
         tsconfigRootDir: import.meta.dirname,
