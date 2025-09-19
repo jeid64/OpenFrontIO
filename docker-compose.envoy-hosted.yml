@@ -1,0 +1,42 @@
+version: "3.8"
+
+services:
+  # Nginx to serve the static files on port 8080
+  static-server:
+    image: nginx:alpine
+    container_name: openfront-static-server
+    ports:
+      - "8080:80"
+    volumes:
+      - ./envoy-static:/usr/share/nginx/html:ro
+      - ./nginx-spa.conf:/etc/nginx/conf.d/default.conf:ro
+    restart: unless-stopped
+    networks:
+      - openfront-network
+
+  # Envoy proxy on port 3000
+  envoy-proxy:
+    image: envoyproxy/envoy:v1.29-latest
+    container_name: openfront-envoy-standalone
+    ports:
+      - "3000:3000"
+      - "9901:9901" # Admin interface
+    volumes:
+      - ./envoy-standalone.yaml:/etc/envoy/envoy.yaml:ro
+    command:
+      [
+        "/usr/local/bin/envoy",
+        "-c",
+        "/etc/envoy/envoy.yaml",
+        "--log-level",
+        "info",
+      ]
+    restart: unless-stopped
+    depends_on:
+      - static-server
+    networks:
+      - openfront-network
+
+networks:
+  openfront-network:
+    driver: bridge
