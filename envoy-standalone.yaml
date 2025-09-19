@@ -1,0 +1,166 @@
+static_resources:
+  listeners:
+    # Single listener on port 3000 for both static files and API proxying
+    - name: main_listener
+      address:
+        socket_address:
+          protocol: TCP
+          address: 0.0.0.0
+          port_value: 3000
+      filter_chains:
+        - filters:
+            - name: envoy.filters.network.http_connection_manager
+              typed_config:
+                "@type": type.googleapis.com/envoy.extensions.filters.network.http_connection_manager.v3.HttpConnectionManager
+                stat_prefix: ingress_http
+                upgrade_configs:
+                  - upgrade_type: websocket
+                route_config:
+                  name: local_route
+                  virtual_hosts:
+                    - name: local_service
+                      domains: ["*"]
+                      routes:
+                        # WebSocket routes for workers
+                        - match:
+                            prefix: "/w0"
+                            headers:
+                              - name: "upgrade"
+                                string_match:
+                                  exact: "websocket"
+                          route:
+                            cluster: openfront_websocket
+                            host_rewrite_literal: openfront.io
+                            upgrade_configs:
+                              - upgrade_type: websocket
+                        - match:
+                            prefix: "/w1"
+                            headers:
+                              - name: "upgrade"
+                                string_match:
+                                  exact: "websocket"
+                          route:
+                            cluster: openfront_websocket
+                            host_rewrite_literal: openfront.io
+                            upgrade_configs:
+                              - upgrade_type: websocket
+                        - match:
+                            prefix: "/w2"
+                            headers:
+                              - name: "upgrade"
+                                string_match:
+                                  exact: "websocket"
+                          route:
+                            cluster: openfront_websocket
+                            host_rewrite_literal: openfront.io
+                            upgrade_configs:
+                              - upgrade_type: websocket
+                        # WebSocket routes for socket
+                        - match:
+                            prefix: "/socket"
+                            headers:
+                              - name: "upgrade"
+                                string_match:
+                                  exact: "websocket"
+                          route:
+                            cluster: openfront_websocket
+                            host_rewrite_literal: openfront.io
+                            upgrade_configs:
+                              - upgrade_type: websocket
+                        # HTTP routes for workers - no path rewriting for API calls
+                        - match:
+                            prefix: "/w0"
+                          route:
+                            cluster: openfront_https
+                            host_rewrite_literal: openfront.io
+                        - match:
+                            prefix: "/w1"
+                          route:
+                            cluster: openfront_https
+                            host_rewrite_literal: openfront.io
+                        - match:
+                            prefix: "/w2"
+                          route:
+                            cluster: openfront_https
+                            host_rewrite_literal: openfront.io
+                        # API endpoints
+                        - match:
+                            prefix: "/api/"
+                          route:
+                            cluster: openfront_https
+                            host_rewrite_literal: openfront.io
+                        # Static files - serve from local directory with SPA fallback
+                        - match:
+                            prefix: "/"
+                          route:
+                            cluster: static_files
+                http_filters:
+                  - name: envoy.filters.http.router
+                    typed_config:
+                      "@type": type.googleapis.com/envoy.extensions.filters.http.router.v3.Router
+
+  clusters:
+    # Static file server cluster (nginx serving built files)
+    - name: static_files
+      connect_timeout: 30s
+      type: LOGICAL_DNS
+      dns_lookup_family: V4_ONLY
+      lb_policy: ROUND_ROBIN
+      load_assignment:
+        cluster_name: static_files
+        endpoints:
+          - lb_endpoints:
+              - endpoint:
+                  address:
+                    socket_address:
+                      address: host.docker.internal
+                      port_value: 8080
+
+    # OpenFront HTTPS cluster
+    - name: openfront_https
+      connect_timeout: 30s
+      type: LOGICAL_DNS
+      dns_lookup_family: V4_ONLY
+      lb_policy: ROUND_ROBIN
+      load_assignment:
+        cluster_name: openfront_https
+        endpoints:
+          - lb_endpoints:
+              - endpoint:
+                  address:
+                    socket_address:
+                      address: openfront.io
+                      port_value: 443
+      transport_socket:
+        name: envoy.transport_sockets.tls
+        typed_config:
+          "@type": type.googleapis.com/envoy.extensions.transport_sockets.tls.v3.UpstreamTlsContext
+          sni: openfront.io
+
+    # OpenFront WebSocket cluster
+    - name: openfront_websocket
+      connect_timeout: 30s
+      type: LOGICAL_DNS
+      dns_lookup_family: V4_ONLY
+      lb_policy: ROUND_ROBIN
+      load_assignment:
+        cluster_name: openfront_websocket
+        endpoints:
+          - lb_endpoints:
+              - endpoint:
+                  address:
+                    socket_address:
+                      address: openfront.io
+                      port_value: 443
+      transport_socket:
+        name: envoy.transport_sockets.tls
+        typed_config:
+          "@type": type.googleapis.com/envoy.extensions.transport_sockets.tls.v3.UpstreamTlsContext
+          sni: openfront.io
+
+admin:
+  address:
+    socket_address:
+      protocol: TCP
+      address: 127.0.0.1
+      port_value: 9901
