@@ -122,7 +122,7 @@ export default async (env, argv) => {
       }),
       new webpack.DefinePlugin({
         "process.env.WEBSOCKET_URL": JSON.stringify(
-          isProduction ? "" : "localhost:3000",
+          isProduction ? "" : "openfront.io",
         ),
         "process.env.GAME_ENV": JSON.stringify(isProduction ? "prod" : "dev"),
         "process.env.GIT_COMMIT": JSON.stringify(gitCommit),
