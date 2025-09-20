@@ -28,6 +28,10 @@ export class UserSettings {
     return this.get("settings.alertFrame", true);
   }
 
+  audioAlerts() {
+    return this.get("settings.audioAlerts", true);
+  }
+
   anonymousNames() {
     return this.get("settings.anonymousNames", false);
   }
@@ -80,6 +84,10 @@ export class UserSettings {
 
   toggleAlertFrame() {
     this.set("settings.alertFrame", !this.alertFrame());
+  }
+
+  toggleAudioAlerts() {
+    this.set("settings.audioAlerts", !this.audioAlerts());
   }
 
   toggleRandomName() {

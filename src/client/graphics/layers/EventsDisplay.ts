@@ -46,6 +46,8 @@ import {
   GoToUnitEvent,
 } from "./Leaderboard";
 
+import { UserSettings } from "../../../core/game/UserSettings";
+import { AudioAlert } from "../../AudioAlert";
 import { getMessageTypeClasses, translateText } from "../../Utils";
 
 interface GameEvent {
@@ -76,6 +78,7 @@ export class EventsDisplay extends LitElement implements Layer {
 
   private active: boolean = false;
   private events: GameEvent[] = [];
+  private userSettings: UserSettings = new UserSettings();
 
   // allianceID -> last checked at tick
   private alliancesCheckedAt = new Map<number, Tick>();
@@ -265,6 +268,11 @@ export class EventsDisplay extends LitElement implements Layer {
 
       const other = this.game.player(alliance.other) as PlayerView;
       if (!other.isAlive()) continue;
+
+      // Play default alert sound for alliance renewal prompts
+      if (this.userSettings.audioAlerts()) {
+        AudioAlert.playDefaultAlert();
+      }
 
       this.addEvent({
         description: translateText("events_display.about_to_expire", {
@@ -664,6 +672,14 @@ export class EventsDisplay extends LitElement implements Layer {
     }
 
     const unitView = this.game.unit(event.unitID);
+
+    // Play urgent alert sound for naval invasions
+    if (
+      event.messageType === MessageType.NAVAL_INVASION_INBOUND &&
+      this.userSettings.audioAlerts()
+    ) {
+      AudioAlert.playUrgentAlert();
+    }
 
     this.addEvent({
       description: event.message,
