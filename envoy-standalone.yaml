@@ -21,7 +21,7 @@ static_resources:
                     - name: local_service
                       domains: ["*"]
                       routes:
-                        # WebSocket routes for workers
+                        # WebSocket routes for workers (/w0 to /w40)
                         - match:
                             prefix: "/w0"
                             headers:
@@ -46,6 +46,424 @@ static_resources:
                               - upgrade_type: websocket
                         - match:
                             prefix: "/w2"
+                            headers:
+                              - name: "upgrade"
+                                string_match:
+                                  exact: "websocket"
+                          route:
+                            cluster: openfront_websocket
+                            host_rewrite_literal: openfront.io
+                            upgrade_configs:
+                              - upgrade_type: websocket
+                        - match:
+                            prefix: "/w3"
+                            headers:
+                              - name: "upgrade"
+                                string_match:
+                                  exact: "websocket"
+                          route:
+                            cluster: openfront_websocket
+                            host_rewrite_literal: openfront.io
+                            upgrade_configs:
+                              - upgrade_type: websocket
+                        - match:
+                            prefix: "/w4"
+                            headers:
+                              - name: "upgrade"
+                                string_match:
+                                  exact: "websocket"
+                          route:
+                            cluster: openfront_websocket
+                            host_rewrite_literal: openfront.io
+                            upgrade_configs:
+                              - upgrade_type: websocket
+                        - match:
+                            prefix: "/w5"
+                            headers:
+                              - name: "upgrade"
+                                string_match:
+                                  exact: "websocket"
+                          route:
+                            cluster: openfront_websocket
+                            host_rewrite_literal: openfront.io
+                            upgrade_configs:
+                              - upgrade_type: websocket
+                        - match:
+                            prefix: "/w6"
+                            headers:
+                              - name: "upgrade"
+                                string_match:
+                                  exact: "websocket"
+                          route:
+                            cluster: openfront_websocket
+                            host_rewrite_literal: openfront.io
+                            upgrade_configs:
+                              - upgrade_type: websocket
+                        - match:
+                            prefix: "/w7"
+                            headers:
+                              - name: "upgrade"
+                                string_match:
+                                  exact: "websocket"
+                          route:
+                            cluster: openfront_websocket
+                            host_rewrite_literal: openfront.io
+                            upgrade_configs:
+                              - upgrade_type: websocket
+                        - match:
+                            prefix: "/w8"
+                            headers:
+                              - name: "upgrade"
+                                string_match:
+                                  exact: "websocket"
+                          route:
+                            cluster: openfront_websocket
+                            host_rewrite_literal: openfront.io
+                            upgrade_configs:
+                              - upgrade_type: websocket
+                        - match:
+                            prefix: "/w9"
+                            headers:
+                              - name: "upgrade"
+                                string_match:
+                                  exact: "websocket"
+                          route:
+                            cluster: openfront_websocket
+                            host_rewrite_literal: openfront.io
+                            upgrade_configs:
+                              - upgrade_type: websocket
+                        - match:
+                            prefix: "/w10"
+                            headers:
+                              - name: "upgrade"
+                                string_match:
+                                  exact: "websocket"
+                          route:
+                            cluster: openfront_websocket
+                            host_rewrite_literal: openfront.io
+                            upgrade_configs:
+                              - upgrade_type: websocket
+                        - match:
+                            prefix: "/w11"
+                            headers:
+                              - name: "upgrade"
+                                string_match:
+                                  exact: "websocket"
+                          route:
+                            cluster: openfront_websocket
+                            host_rewrite_literal: openfront.io
+                            upgrade_configs:
+                              - upgrade_type: websocket
+                        - match:
+                            prefix: "/w12"
+                            headers:
+                              - name: "upgrade"
+                                string_match:
+                                  exact: "websocket"
+                          route:
+                            cluster: openfront_websocket
+                            host_rewrite_literal: openfront.io
+                            upgrade_configs:
+                              - upgrade_type: websocket
+                        - match:
+                            prefix: "/w13"
+                            headers:
+                              - name: "upgrade"
+                                string_match:
+                                  exact: "websocket"
+                          route:
+                            cluster: openfront_websocket
+                            host_rewrite_literal: openfront.io
+                            upgrade_configs:
+                              - upgrade_type: websocket
+                        - match:
+                            prefix: "/w14"
+                            headers:
+                              - name: "upgrade"
+                                string_match:
+                                  exact: "websocket"
+                          route:
+                            cluster: openfront_websocket
+                            host_rewrite_literal: openfront.io
+                            upgrade_configs:
+                              - upgrade_type: websocket
+                        - match:
+                            prefix: "/w15"
+                            headers:
+                              - name: "upgrade"
+                                string_match:
+                                  exact: "websocket"
+                          route:
+                            cluster: openfront_websocket
+                            host_rewrite_literal: openfront.io
+                            upgrade_configs:
+                              - upgrade_type: websocket
+                        - match:
+                            prefix: "/w16"
+                            headers:
+                              - name: "upgrade"
+                                string_match:
+                                  exact: "websocket"
+                          route:
+                            cluster: openfront_websocket
+                            host_rewrite_literal: openfront.io
+                            upgrade_configs:
+                              - upgrade_type: websocket
+                        - match:
+                            prefix: "/w17"
+                            headers:
+                              - name: "upgrade"
+                                string_match:
+                                  exact: "websocket"
+                          route:
+                            cluster: openfront_websocket
+                            host_rewrite_literal: openfront.io
+                            upgrade_configs:
+                              - upgrade_type: websocket
+                        - match:
+                            prefix: "/w18"
+                            headers:
+                              - name: "upgrade"
+                                string_match:
+                                  exact: "websocket"
+                          route:
+                            cluster: openfront_websocket
+                            host_rewrite_literal: openfront.io
+                            upgrade_configs:
+                              - upgrade_type: websocket
+                        - match:
+                            prefix: "/w19"
+                            headers:
+                              - name: "upgrade"
+                                string_match:
+                                  exact: "websocket"
+                          route:
+                            cluster: openfront_websocket
+                            host_rewrite_literal: openfront.io
+                            upgrade_configs:
+                              - upgrade_type: websocket
+                        - match:
+                            prefix: "/w20"
+                            headers:
+                              - name: "upgrade"
+                                string_match:
+                                  exact: "websocket"
+                          route:
+                            cluster: openfront_websocket
+                            host_rewrite_literal: openfront.io
+                            upgrade_configs:
+                              - upgrade_type: websocket
+                        - match:
+                            prefix: "/w21"
+                            headers:
+                              - name: "upgrade"
+                                string_match:
+                                  exact: "websocket"
+                          route:
+                            cluster: openfront_websocket
+                            host_rewrite_literal: openfront.io
+                            upgrade_configs:
+                              - upgrade_type: websocket
+                        - match:
+                            prefix: "/w22"
+                            headers:
+                              - name: "upgrade"
+                                string_match:
+                                  exact: "websocket"
+                          route:
+                            cluster: openfront_websocket
+                            host_rewrite_literal: openfront.io
+                            upgrade_configs:
+                              - upgrade_type: websocket
+                        - match:
+                            prefix: "/w23"
+                            headers:
+                              - name: "upgrade"
+                                string_match:
+                                  exact: "websocket"
+                          route:
+                            cluster: openfront_websocket
+                            host_rewrite_literal: openfront.io
+                            upgrade_configs:
+                              - upgrade_type: websocket
+                        - match:
+                            prefix: "/w24"
+                            headers:
+                              - name: "upgrade"
+                                string_match:
+                                  exact: "websocket"
+                          route:
+                            cluster: openfront_websocket
+                            host_rewrite_literal: openfront.io
+                            upgrade_configs:
+                              - upgrade_type: websocket
+                        - match:
+                            prefix: "/w25"
+                            headers:
+                              - name: "upgrade"
+                                string_match:
+                                  exact: "websocket"
+                          route:
+                            cluster: openfront_websocket
+                            host_rewrite_literal: openfront.io
+                            upgrade_configs:
+                              - upgrade_type: websocket
+                        - match:
+                            prefix: "/w26"
+                            headers:
+                              - name: "upgrade"
+                                string_match:
+                                  exact: "websocket"
+                          route:
+                            cluster: openfront_websocket
+                            host_rewrite_literal: openfront.io
+                            upgrade_configs:
+                              - upgrade_type: websocket
+                        - match:
+                            prefix: "/w27"
+                            headers:
+                              - name: "upgrade"
+                                string_match:
+                                  exact: "websocket"
+                          route:
+                            cluster: openfront_websocket
+                            host_rewrite_literal: openfront.io
+                            upgrade_configs:
+                              - upgrade_type: websocket
+                        - match:
+                            prefix: "/w28"
+                            headers:
+                              - name: "upgrade"
+                                string_match:
+                                  exact: "websocket"
+                          route:
+                            cluster: openfront_websocket
+                            host_rewrite_literal: openfront.io
+                            upgrade_configs:
+                              - upgrade_type: websocket
+                        - match:
+                            prefix: "/w29"
+                            headers:
+                              - name: "upgrade"
+                                string_match:
+                                  exact: "websocket"
+                          route:
+                            cluster: openfront_websocket
+                            host_rewrite_literal: openfront.io
+                            upgrade_configs:
+                              - upgrade_type: websocket
+                        - match:
+                            prefix: "/w30"
+                            headers:
+                              - name: "upgrade"
+                                string_match:
+                                  exact: "websocket"
+                          route:
+                            cluster: openfront_websocket
+                            host_rewrite_literal: openfront.io
+                            upgrade_configs:
+                              - upgrade_type: websocket
+                        - match:
+                            prefix: "/w31"
+                            headers:
+                              - name: "upgrade"
+                                string_match:
+                                  exact: "websocket"
+                          route:
+                            cluster: openfront_websocket
+                            host_rewrite_literal: openfront.io
+                            upgrade_configs:
+                              - upgrade_type: websocket
+                        - match:
+                            prefix: "/w32"
+                            headers:
+                              - name: "upgrade"
+                                string_match:
+                                  exact: "websocket"
+                          route:
+                            cluster: openfront_websocket
+                            host_rewrite_literal: openfront.io
+                            upgrade_configs:
+                              - upgrade_type: websocket
+                        - match:
+                            prefix: "/w33"
+                            headers:
+                              - name: "upgrade"
+                                string_match:
+                                  exact: "websocket"
+                          route:
+                            cluster: openfront_websocket
+                            host_rewrite_literal: openfront.io
+                            upgrade_configs:
+                              - upgrade_type: websocket
+                        - match:
+                            prefix: "/w34"
+                            headers:
+                              - name: "upgrade"
+                                string_match:
+                                  exact: "websocket"
+                          route:
+                            cluster: openfront_websocket
+                            host_rewrite_literal: openfront.io
+                            upgrade_configs:
+                              - upgrade_type: websocket
+                        - match:
+                            prefix: "/w35"
+                            headers:
+                              - name: "upgrade"
+                                string_match:
+                                  exact: "websocket"
+                          route:
+                            cluster: openfront_websocket
+                            host_rewrite_literal: openfront.io
+                            upgrade_configs:
+                              - upgrade_type: websocket
+                        - match:
+                            prefix: "/w36"
+                            headers:
+                              - name: "upgrade"
+                                string_match:
+                                  exact: "websocket"
+                          route:
+                            cluster: openfront_websocket
+                            host_rewrite_literal: openfront.io
+                            upgrade_configs:
+                              - upgrade_type: websocket
+                        - match:
+                            prefix: "/w37"
+                            headers:
+                              - name: "upgrade"
+                                string_match:
+                                  exact: "websocket"
+                          route:
+                            cluster: openfront_websocket
+                            host_rewrite_literal: openfront.io
+                            upgrade_configs:
+                              - upgrade_type: websocket
+                        - match:
+                            prefix: "/w38"
+                            headers:
+                              - name: "upgrade"
+                                string_match:
+                                  exact: "websocket"
+                          route:
+                            cluster: openfront_websocket
+                            host_rewrite_literal: openfront.io
+                            upgrade_configs:
+                              - upgrade_type: websocket
+                        - match:
+                            prefix: "/w39"
+                            headers:
+                              - name: "upgrade"
+                                string_match:
+                                  exact: "websocket"
+                          route:
+                            cluster: openfront_websocket
+                            host_rewrite_literal: openfront.io
+                            upgrade_configs:
+                              - upgrade_type: websocket
+                        - match:
+                            prefix: "/w40"
                             headers:
                               - name: "upgrade"
                                 string_match:
@@ -67,7 +485,7 @@ static_resources:
                             host_rewrite_literal: openfront.io
                             upgrade_configs:
                               - upgrade_type: websocket
-                        # HTTP routes for workers - no path rewriting for API calls
+                        # HTTP routes for workers (/w0 to /w40) - no path rewriting for API calls
                         - match:
                             prefix: "/w0"
                           route:
@@ -80,6 +498,196 @@ static_resources:
                             host_rewrite_literal: openfront.io
                         - match:
                             prefix: "/w2"
+                          route:
+                            cluster: openfront_https
+                            host_rewrite_literal: openfront.io
+                        - match:
+                            prefix: "/w3"
+                          route:
+                            cluster: openfront_https
+                            host_rewrite_literal: openfront.io
+                        - match:
+                            prefix: "/w4"
+                          route:
+                            cluster: openfront_https
+                            host_rewrite_literal: openfront.io
+                        - match:
+                            prefix: "/w5"
+                          route:
+                            cluster: openfront_https
+                            host_rewrite_literal: openfront.io
+                        - match:
+                            prefix: "/w6"
+                          route:
+                            cluster: openfront_https
+                            host_rewrite_literal: openfront.io
+                        - match:
+                            prefix: "/w7"
+                          route:
+                            cluster: openfront_https
+                            host_rewrite_literal: openfront.io
+                        - match:
+                            prefix: "/w8"
+                          route:
+                            cluster: openfront_https
+                            host_rewrite_literal: openfront.io
+                        - match:
+                            prefix: "/w9"
+                          route:
+                            cluster: openfront_https
+                            host_rewrite_literal: openfront.io
+                        - match:
+                            prefix: "/w10"
+                          route:
+                            cluster: openfront_https
+                            host_rewrite_literal: openfront.io
+                        - match:
+                            prefix: "/w11"
+                          route:
+                            cluster: openfront_https
+                            host_rewrite_literal: openfront.io
+                        - match:
+                            prefix: "/w12"
+                          route:
+                            cluster: openfront_https
+                            host_rewrite_literal: openfront.io
+                        - match:
+                            prefix: "/w13"
+                          route:
+                            cluster: openfront_https
+                            host_rewrite_literal: openfront.io
+                        - match:
+                            prefix: "/w14"
+                          route:
+                            cluster: openfront_https
+                            host_rewrite_literal: openfront.io
+                        - match:
+                            prefix: "/w15"
+                          route:
+                            cluster: openfront_https
+                            host_rewrite_literal: openfront.io
+                        - match:
+                            prefix: "/w16"
+                          route:
+                            cluster: openfront_https
+                            host_rewrite_literal: openfront.io
+                        - match:
+                            prefix: "/w17"
+                          route:
+                            cluster: openfront_https
+                            host_rewrite_literal: openfront.io
+                        - match:
+                            prefix: "/w18"
+                          route:
+                            cluster: openfront_https
+                            host_rewrite_literal: openfront.io
+                        - match:
+                            prefix: "/w19"
+                          route:
+                            cluster: openfront_https
+                            host_rewrite_literal: openfront.io
+                        - match:
+                            prefix: "/w20"
+                          route:
+                            cluster: openfront_https
+                            host_rewrite_literal: openfront.io
+                        - match:
+                            prefix: "/w21"
+                          route:
+                            cluster: openfront_https
+                            host_rewrite_literal: openfront.io
+                        - match:
+                            prefix: "/w22"
+                          route:
+                            cluster: openfront_https
+                            host_rewrite_literal: openfront.io
+                        - match:
+                            prefix: "/w23"
+                          route:
+                            cluster: openfront_https
+                            host_rewrite_literal: openfront.io
+                        - match:
+                            prefix: "/w24"
+                          route:
+                            cluster: openfront_https
+                            host_rewrite_literal: openfront.io
+                        - match:
+                            prefix: "/w25"
+                          route:
+                            cluster: openfront_https
+                            host_rewrite_literal: openfront.io
+                        - match:
+                            prefix: "/w26"
+                          route:
+                            cluster: openfront_https
+                            host_rewrite_literal: openfront.io
+                        - match:
+                            prefix: "/w27"
+                          route:
+                            cluster: openfront_https
+                            host_rewrite_literal: openfront.io
+                        - match:
+                            prefix: "/w28"
+                          route:
+                            cluster: openfront_https
+                            host_rewrite_literal: openfront.io
+                        - match:
+                            prefix: "/w29"
+                          route:
+                            cluster: openfront_https
+                            host_rewrite_literal: openfront.io
+                        - match:
+                            prefix: "/w30"
+                          route:
+                            cluster: openfront_https
+                            host_rewrite_literal: openfront.io
+                        - match:
+                            prefix: "/w31"
+                          route:
+                            cluster: openfront_https
+                            host_rewrite_literal: openfront.io
+                        - match:
+                            prefix: "/w32"
+                          route:
+                            cluster: openfront_https
+                            host_rewrite_literal: openfront.io
+                        - match:
+                            prefix: "/w33"
+                          route:
+                            cluster: openfront_https
+                            host_rewrite_literal: openfront.io
+                        - match:
+                            prefix: "/w34"
+                          route:
+                            cluster: openfront_https
+                            host_rewrite_literal: openfront.io
+                        - match:
+                            prefix: "/w35"
+                          route:
+                            cluster: openfront_https
+                            host_rewrite_literal: openfront.io
+                        - match:
+                            prefix: "/w36"
+                          route:
+                            cluster: openfront_https
+                            host_rewrite_literal: openfront.io
+                        - match:
+                            prefix: "/w37"
+                          route:
+                            cluster: openfront_https
+                            host_rewrite_literal: openfront.io
+                        - match:
+                            prefix: "/w38"
+                          route:
+                            cluster: openfront_https
+                            host_rewrite_literal: openfront.io
+                        - match:
+                            prefix: "/w39"
+                          route:
+                            cluster: openfront_https
+                            host_rewrite_literal: openfront.io
+                        - match:
+                            prefix: "/w40"
                           route:
                             cluster: openfront_https
                             host_rewrite_literal: openfront.io
@@ -113,7 +721,7 @@ static_resources:
               - endpoint:
                   address:
                     socket_address:
-                      address: host.docker.internal
+                      address: 172.17.0.1
                       port_value: 8080
 
     # OpenFront HTTPS cluster
