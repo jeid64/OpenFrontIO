@@ -1,4 +1,4 @@
-import { translateText } from "../client/Utils";
+import { isMobileDevice, translateText } from "../client/Utils";
 import { EventBus } from "../core/EventBus";
 import {
   ClientID,
@@ -401,6 +401,15 @@ export class ClientGameRunner {
     if (this.gameView.inSpawnPhase()) {
       return;
     }
+
+    // On mobile, skip direct attack logic - let ContextMenuEvent/mobile panel handle it
+    if (isMobileDevice()) {
+      console.log(
+        "Mobile device detected - skipping direct attack from MouseUpEvent",
+      );
+      return;
+    }
+
     if (this.myPlayer === null) {
       const myPlayer = this.gameView.playerByClientID(this.lobby.clientID);
       if (myPlayer === null) return;
@@ -409,6 +418,7 @@ export class ClientGameRunner {
     this.myPlayer.actions(tile).then((actions) => {
       if (this.myPlayer === null) return;
       if (actions.canAttack) {
+        console.log("Desktop: Sending attack from MouseUpEvent double-click");
         this.eventBus.emit(
           new SendAttackIntentEvent(
             this.gameView.owner(tile).id(),
@@ -416,6 +426,7 @@ export class ClientGameRunner {
           ),
         );
       } else if (this.canBoatAttack(actions, tile)) {
+        console.log("Desktop: Sending boat attack from MouseUpEvent");
         this.sendBoatAttackIntent(tile);
       }
 

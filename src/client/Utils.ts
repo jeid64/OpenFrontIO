@@ -199,3 +199,26 @@ export function isInIframe(): boolean {
     return true;
   }
 }
+
+/**
+ * Detects if the user is on a mobile device
+ * @returns true if the user is on a mobile device
+ */
+export function isMobileDevice(): boolean {
+  // Check for touch support
+  const hasTouch =
+    "ontouchstart" in window ||
+    navigator.maxTouchPoints > 0 ||
+    (navigator as any).msMaxTouchPoints > 0;
+
+  // Check user agent for mobile indicators
+  const mobileRegex =
+    /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i;
+  const isMobileUA = mobileRegex.test(navigator.userAgent);
+
+  // Check screen size (mobile typically < 768px width)
+  const isSmallScreen = window.innerWidth < 768;
+
+  // Consider it mobile if it has touch AND (matches UA OR is small screen)
+  return hasTouch && (isMobileUA || isSmallScreen);
+}

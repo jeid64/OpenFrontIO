@@ -366,6 +366,10 @@ export class InputHandler {
       Math.abs(event.y - this.lastPointerDownY);
     if (dist < 10) {
       if (event.pointerType === "touch") {
+        // Emit both events for touch - let handlers decide which to use
+        // MouseUpEvent handles spawn selection and direct attacks
+        // ContextMenuEvent handles menu opening
+        this.eventBus.emit(new MouseUpEvent(event.x, event.y));
         this.eventBus.emit(new ContextMenuEvent(event.clientX, event.clientY));
         event.preventDefault();
         return;

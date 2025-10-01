@@ -4,12 +4,14 @@ import { EventBus } from "../../../core/EventBus";
 import { PlayerActions } from "../../../core/game/Game";
 import { TileRef } from "../../../core/game/GameMap";
 import { GameView, PlayerView } from "../../../core/game/GameView";
+import { isMobileDevice } from "../../Utils";
 import { TransformHandler } from "../TransformHandler";
 import { UIState } from "../UIState";
 import { BuildMenu } from "./BuildMenu";
 import { ChatIntegration } from "./ChatIntegration";
 import { EmojiTable } from "./EmojiTable";
 import { Layer } from "./Layer";
+import { MobileActionPanel } from "./MobileActionPanel";
 import { PlayerActionHandler } from "./PlayerActionHandler";
 import { PlayerPanel } from "./PlayerPanel";
 import { RadialMenu, RadialMenuConfig } from "./RadialMenu";
@@ -26,6 +28,8 @@ import { ContextMenuEvent } from "../../InputHandler";
 @customElement("main-radial-menu")
 export class MainRadialMenu extends LitElement implements Layer {
   private radialMenu: RadialMenu;
+  private mobileActionPanel: MobileActionPanel;
+  private isMobile: boolean;
 
   private playerActionHandler: PlayerActionHandler;
   private chatIntegration: ChatIntegration;
@@ -42,6 +46,9 @@ export class MainRadialMenu extends LitElement implements Layer {
     private playerPanel: PlayerPanel,
   ) {
     super();
+
+    // Detect if we're on a mobile device
+    this.isMobile = isMobileDevice();
 
     const menuConfig: RadialMenuConfig = {
       centerButtonIcon: swordIcon,
@@ -63,6 +70,8 @@ export class MainRadialMenu extends LitElement implements Layer {
       menuConfig,
     );
 
+    this.mobileActionPanel = new MobileActionPanel(this.eventBus);
+
     this.playerActionHandler = new PlayerActionHandler(
       this.eventBus,
       this.uiState,
@@ -73,7 +82,19 @@ export class MainRadialMenu extends LitElement implements Layer {
 
   init() {
     this.radialMenu.init();
+    this.mobileActionPanel.init();
+
+    // Add mobile action panel to the DOM if on mobile
+    if (this.isMobile) {
+      document.body.appendChild(this.mobileActionPanel);
+    }
+
     this.eventBus.on(ContextMenuEvent, (event) => {
+      // Don't open menu during spawn phase - let MouseUpEvent handle spawn selection
+      if (this.game.inSpawnPhase()) {
+        return;
+      }
+
       const worldCoords = this.transformHandler.screenToWorldCoordinates(
         event.x,
         event.y,
@@ -131,16 +152,34 @@ export class MainRadialMenu extends LitElement implements Layer {
       eventBus: this.eventBus,
     };
 
-    this.radialMenu.setParams(params);
-    if (screenX !== null && screenY !== null) {
-      this.radialMenu.showRadialMenu(screenX, screenY);
+    // Show mobile panel on mobile devices, radial menu on desktop
+    if (this.isMobile) {
+      if (screenX !== null && screenY !== null) {
+        this.mobileActionPanel.showPanel(
+          params,
+          rootMenuElement,
+          centerButtonElement,
+          screenX,
+          screenY,
+        );
+      }
     } else {
-      this.radialMenu.refresh();
+      this.radialMenu.setParams(params);
+      if (screenX !== null && screenY !== null) {
+        this.radialMenu.showRadialMenu(screenX, screenY);
+      } else {
+        this.radialMenu.refresh();
+      }
     }
   }
 
   async tick() {
-    if (!this.radialMenu.isMenuVisible() || this.clickedTile === null) return;
+    const isMenuVisible = this.isMobile
+      ? this.mobileActionPanel.isMenuVisible()
+      : this.radialMenu.isMenuVisible();
+
+    if (!isMenuVisible || this.clickedTile === null) return;
+
     if (this.game.ticks() % 5 === 0) {
       this.game
         .myPlayer()!
@@ -168,8 +207,14 @@ export class MainRadialMenu extends LitElement implements Layer {
   }
 
   closeMenu() {
-    if (this.radialMenu.isMenuVisible()) {
-      this.radialMenu.hideRadialMenu();
+    if (this.isMobile) {
+      if (this.mobileActionPanel.isMenuVisible()) {
+        this.mobileActionPanel.hidePanel();
+      }
+    } else {
+      if (this.radialMenu.isMenuVisible()) {
+        this.radialMenu.hideRadialMenu();
+      }
     }
 
     if (this.buildMenu.isVisible) {
